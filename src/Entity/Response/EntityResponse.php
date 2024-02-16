@@ -3,9 +3,9 @@
  * @copyright 2013-2024 Nekrasov Vitaliy
  * @license GNU General Public License version 2 or later
  */
-namespace Wishbox\ShippingService\Russianpost\Registrator\Entity\Response;
+namespace Wishbox\SendingRussianPostSDK\Entity\Response;
 
-use Wishbox\ShippingService\Russianpost\Registrator\Entity\Response\Source;
+use Wishbox\SendingRussianPostSDK\Entity\Response\Source;
 
 /**
  * Class EntityResponse Информация о сущности.
@@ -15,15 +15,6 @@ use Wishbox\ShippingService\Russianpost\Registrator\Entity\Response\Source;
 class EntityResponse extends Source
 {
 	/**
-	 * Идентификатор запроса в ИС СДЭК.
-	 *
-	 * @var RequestsResponse[]
-	 *
-	 * @since 1.0.0
-	 */
-	protected array $requests;
-
-	/**
 	 * Сущность и ее идентификатор.
 	 *
 	 * @var array
@@ -31,18 +22,6 @@ class EntityResponse extends Source
 	 * @since 1.0.0
 	 */
 	protected array $entity;
-
-	/**
-	 * Получить идентификатор запроса в ИС СДЭК.
-	 *
-	 * @return RequestsResponse[]
-	 *
-	 * @since 1.0.0
-	 */
-	public function getRequests(): array
-	{
-		return $this->requests;
-	}
 
 	/**
 	 * Получить сущность и ее идентификатор.

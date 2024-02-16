@@ -3,9 +3,9 @@
  * @copyright 2013-2024 Nekrasov Vitaliy
  * @license GNU General Public License version 2 or later
  */
-namespace Wishbox\ShippingService\Russianpost\Registrator\Entity\Response;
+namespace Wishbox\SendingRussianPostSDK\Entity\Response;
 
-use AntistressStore\CdekSDK2\Constants;
+use Wishbox\SendingRussianPostSDK\Constants;
 
 /**
  * @since 1.0.0
@@ -14,7 +14,9 @@ class Source
 {
 	/**
 	 * Формирует объект класса из ответа.
+	 *
 	 * @param   array|null  $properties  Properties
+	 *
 	 * @since 1.0.0
 	 */
 	public function __construct(?array $properties = null)

@@ -3,10 +3,13 @@
  * @copyright 2013-2024 Nekrasov Vitaliy
  * @license GNU General Public License version 2 or later
  */
-namespace Wishbox\ShippingService\Russianpost\Registrator\Exception;
+namespace Wishbox\SendingRussianPostSDK\Exception;
 
 use Throwable;
 
+/**
+ * @since 1.0.0
+ */
 class RequestException extends Exception
 {
 	/**

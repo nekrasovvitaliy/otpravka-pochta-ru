@@ -3,7 +3,7 @@
  * @copyright 2013-2024 Nekrasov Vitaliy
  * @license GNU General Public License version 2 or later
  */
-namespace Wishbox\ShippingService\Russianpost\Registrator\Enum;
+namespace Wishbox\SendingRussianPostSDK\Enum;
 
 /**
  * @since 1.0.0

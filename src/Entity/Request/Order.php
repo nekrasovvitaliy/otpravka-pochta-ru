@@ -3,12 +3,12 @@
  * @copyright 2013-2024 Nekrasov Vitaliy
  * @license GNU General Public License version 2 or later
  */
-namespace Wishbox\ShippingService\Russianpost\Registrator\Entity\Request;
+namespace Wishbox\SendingRussianPostSDK\Entity\Request;
 
-use Wishbox\ShippingService\Russianpost\Registrator\Entity\Request\Order\Dimension;
-use Wishbox\ShippingService\Russianpost\Registrator\Enum\BaseAddressTypeEnum;
-use Wishbox\ShippingService\Russianpost\Registrator\Enum\BaseMailCategoryEnum;
-use Wishbox\ShippingService\Russianpost\Registrator\Enum\BaseMailTypeEnum;
+use Wishbox\SendingRussianPostSDK\Entity\Request\Order\Dimension;
+use Wishbox\SendingRussianPostSDK\Enum\BaseAddressTypeEnum;
+use Wishbox\SendingRussianPostSDK\Enum\BaseMailCategoryEnum;
+use Wishbox\SendingRussianPostSDK\Enum\BaseMailTypeEnum;
 
 /**
  * @since 1.0.0

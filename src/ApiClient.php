@@ -3,19 +3,19 @@
  * @copyright 2013-2024 Nekrasov Vitaliy
  * @license GNU General Public License version 2 or later
  */
-namespace Wishbox\ShippingService\Russianpost\Registrator;
+namespace Wishbox\SendingRussianPostSDK;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
-use Wishbox\ShippingService\Russianpost\Registrator\Entity\Request\Order;
-use Wishbox\ShippingService\Russianpost\Registrator\Entity\Request\RequestInterface;
-use Wishbox\ShippingService\Russianpost\Registrator\Entity\Response\EntityResponse;
-use Wishbox\ShippingService\Russianpost\Registrator\Exception\RegistratorRequestException;
+use Wishbox\SendingRussianPostSDK\Entity\Request\Order;
+use Wishbox\SendingRussianPostSDK\Entity\Request\RequestInterface;
+use Wishbox\SendingRussianPostSDK\Entity\Response\EntityResponse;
+use Wishbox\SendingRussianPostSDK\Exception\RequestException;
 
 /**
  * @since 1.0.0
  */
-final class Client
+final class ApiClient
 {
 	/**
 	 * $authorisationToken
@@ -34,24 +34,6 @@ final class Client
 	 * @since 1.0.0
 	 */
 	private string $authorisationKey;
-
-	/**
-	 * Настройки массив сохранения.
-	 *
-	 * @var array
-	 *
-	 * @since 1.0.0
-	 */
-	private array $memory;
-
-	/**
-	 * Коллбэк сохранения токэна.
-	 *
-	 * @var callable
-	 *
-	 * @since 1.0.0
-	 */
-	private $memorySaveFu;
 
 	/**
 	 * @var integer
@@ -157,33 +139,25 @@ final class Client
 	}
 
 	/**
-	 * Установить параметр настройки сохранения.
+	 * Создание заказа.
 	 *
-	 * @param   array|null  $memory  массив настройки сохранения
-	 * @param   callable    $fu      колл бэк сохранения
+	 * @param   Order  $order  - Параметры заказа
 	 *
-	 * @return self
+	 * @return EntityResponse
 	 *
-	 * @since 1.0.0
-	 */
-	public function setMemory(?array $memory, callable $fu): self
-	{
-		$this->memory = $memory;
-		$this->memorySaveFu = $fu;
-
-		return $this;
-	}
-
-	/**
-	 * Проверяет передан ли сохраненный массив данных авторизации.
-	 *
-	 * @return array|null
+	 * @throws RequestException|GuzzleException
 	 *
 	 * @since 1.0.0
 	 */
-	private function getMemory(): ?array
+	public function createOrder(Order $order): EntityResponse
 	{
-		return $this->memory;
+		return new EntityResponse(
+			$this->apiRequest(
+				'PUT',
+				Constants::CREATE_ORDER_URL,
+				$order
+			)
+		);
 	}
 
 	/**
@@ -195,7 +169,7 @@ final class Client
 	 *
 	 * @return boolean
 	 *
-	 * @throws RegistratorRequestException
+	 * @throws RequestException
 	 *
 	 * @since 1.0.0
 	 */
@@ -203,23 +177,18 @@ final class Client
 	{
 		if (empty($apiResponse))
 		{
-			throw new RegistratorRequestException(
+			throw new RequestException(
 				'От API CDEK при вызове метода ' . $method . ' пришел пустой ответ',
 				$response->getStatusCode()
 			);
 		}
 
-		if ($response->getStatusCode() > 202 && isset($apiResponse['requests'][0]['errors'])
-			|| isset($apiResponse['requests'][0]['state']) && $apiResponse['requests'][0]['state'] == 'INVALID'
-		)
-		{
-			$message = RegistratorRequestException::getTranslation(
-				$apiResponse['requests'][0]['errors'][0]['code'],
-				$apiResponse['requests'][0]['errors'][0]['message']
-			);
+		$statusCode = $response->getStatusCode();
 
-			throw new RegistratorRequestException(
-				'От API CDEK при вызове метода ' . $method . ' получена ошибка: ' . $message,
+		if ($statusCode = 202 && isset($apiResponse['requests'][0]['errors']))
+		{
+			throw new RequestException(
+				'От API otpravka.pochta.ru при вызове метода ' . $method . ' получена ошибки: ' . $message,
 				$response->getStatusCode(),
 				null,
 				$apiResponse['requests'][0]['errors'][0]['code'],
@@ -227,53 +196,6 @@ final class Client
 			);
 		}
 
-		if ($response->getStatusCode() == 200 && isset($apiResponse['errors'])
-			|| isset($apiResponse['state']) && $apiResponse['state'] == 'INVALID'
-			|| $response->getStatusCode() !== 200 && isset($apiResponse['errors']))
-		{
-			$message = RegistratorRequestException::getTranslation(
-				$apiResponse['errors'][0]['code'],
-				$apiResponse['errors'][0]['message']
-			);
-			$e = new RegistratorRequestException(
-				'От API CDEK при вызове метода ' . $method . ' получена ошибка: ' . $message,
-				$response->getStatusCode()
-			);
-
-			throw $e;
-		}
-
-		if ($response->getStatusCode() > 202 && !isset($apiResponse['requests'][0]['errors']))
-		{
-			throw new RegistratorRequestException(
-				'Неверный код ответа от сервера CDEK при вызове метода'
-				. $method . ': ' . $response->getStatusCode(),
-				$response->getStatusCode()
-			);
-		}
-
 		return false;
-	}
-
-	/**
-	 * Создание заказа.
-	 *
-	 * @param   Order  $order  - Параметры заказа
-	 *
-	 * @return EntityResponse
-	 *
-	 * @throws RegistratorRequestException|GuzzleException
-	 *
-	 * @since 1.0.0
-	 */
-	public function createOrder(Order $order): EntityResponse
-	{
-		return new EntityResponse(
-			$this->apiRequest(
-				'POST',
-				'user/backlog',
-				$order
-			)
-		);
 	}
 }

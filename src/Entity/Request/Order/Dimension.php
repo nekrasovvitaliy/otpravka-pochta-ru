@@ -3,9 +3,9 @@
  * @copyright 2013-2024 Nekrasov Vitaliy
  * @license GNU General Public License version 2 or later
  */
-namespace Wishbox\ShippingService\Russianpost\Registrator\Entity\Request\Order;
+namespace Wishbox\SendingRussianPostSDK\Entity\Request\Order;
 
-use Wishbox\ShippingService\Russianpost\Registrator\Entity\Request\Source;
+use Wishbox\SendingRussianPostSDK\Entity\Request\Source;
 
 /**
  * @since 1.0.0
