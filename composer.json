@@ -1,0 +1,19 @@
+{
+    "name": "nekrasovvitaliy/otpravka-pochta-ru",
+    "description": "API client for otpravka.pochta.ru.",
+    "type": "library",
+    "license": "GPL-3.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "Wishbox\\SendingRussianPostSDK\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vitaliy Nekrasov",
+            "email": "nekrasov_vitaliy@ist.ru"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
